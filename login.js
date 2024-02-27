@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         feededAnimals: [],
       });
       localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
-      alert("Welcome back to the zoo, " + visitorName);
+      alert("Welcome to the zoo, " + visitorName);
       console.log(onlineVisitors);
 
       // Redirect to the zoo page

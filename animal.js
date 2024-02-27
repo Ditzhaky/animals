@@ -45,6 +45,7 @@ renderRelatedAnimals();
 
 function feedAnimal() {
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
+  window.location.href = "/animal.html";
 
   // Check if there is a visitor logged in
   if (onlineVisitors.length === 0) {
