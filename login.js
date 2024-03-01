@@ -1,6 +1,23 @@
 // תממשו את הלוגיקה של בחירת אורח שנכנס לגן החיות
 // שמרו את האורח שבחרתם, בלוקל סטורג' כך שבכל העמודים נדע מי האורח הנוכחי
 document.addEventListener("DOMContentLoaded", function () {
+  addArraysForNewVisitors(); // This will add 'visitedAnimals' and 'favoriteAnimals' to those visitors who don't have them
+  function addArraysForNewVisitors() {
+    visitors.forEach((visitor) => {
+      // Check if the visitor doesn't have the 'visitedAnimals' array
+      if (!visitor.visitedAnimals) {
+        visitor.visitedAnimals = []; // Initialize 'visitedAnimals' as an empty array
+        localStorage.setItem("visitors", JSON.stringify(visitors));
+      }
+
+      // Check if the visitor doesn't have the 'favoriteAnimals' array
+      if (!visitor.feededAnimals) {
+        visitor.feededAnimals = []; // Initialize 'favoriteAnimals' as an empty array
+        localStorage.setItem("visitors", JSON.stringify(visitors));
+      }
+    });
+  }
+
   function loginAsVisitor(visitorName) {
     let onlineVisitors =
       JSON.parse(localStorage.getItem("onlineVisitors")) || [];
@@ -18,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (onlineVisitors.length === 0) {
       // Array is empty, so push the new visitor with their coins
       onlineVisitors.push({
-        visitorName,
+        name: visitorName,
         coins: visitor.coins,
         visitedAnimals: [],
         feededAnimals: [],
@@ -59,7 +76,9 @@ document.addEventListener("DOMContentLoaded", function () {
     coinsElement.textContent = `Coins: ${visitor.coins}`;
 
     const imageElement = document.createElement("img");
-    imageElement.src = "images/avatar.png"; // Replace with actual image source
+    // imageElement.src = "images/avatar.png"; // Replace with actual image source
+    const randomIndex = Math.floor(Math.random() * stockImages.length);
+    imageElement.src = stockImages[randomIndex];
 
     // Append elements to the card
     card.appendChild(nameElement);

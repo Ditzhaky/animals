@@ -1,26 +1,43 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const selectElement = document.getElementById("visitor-select");
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
+  let visitorInfo = document.getElementById("visitor-info");
 
-  // Check if a visitor is logged in
-  if (onlineVisitors.length > 0) {
-    let visitor = onlineVisitors[0]; // Assuming only one visitor is logged in
+  console.log(onlineVisitors[0].name);
+  visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
 
-    // Update the visitor's name and coins in the navigation menu
-    let visitorInfo = document.getElementById("visitor-info");
-    visitorInfo.innerHTML = `${visitor.visitorName} - Coins: ${visitor.coins}`;
-  }
-  const visitorSelect = document.getElementById("visitor-select");
-
-  // Retrieve visitors data from local storage
-  const visitors = JSON.parse(localStorage.getItem("visitors")) || [];
-
-  // Add options for each visitor
   visitors.forEach((visitor) => {
     const option = document.createElement("option");
-    option.value = visitor.name; // Set the visitor's name as the option value
-    option.textContent = visitor.name; // Set the visitor's name as the option text
-    visitorSelect.appendChild(option); // Append the option to the select element
+    option.textContent = visitor.name;
+    option.value = visitor.name;
+    selectElement.appendChild(option);
   });
+  function updateVisitorInfo(selectedVisitor) {
+    onlineVisitors[0] = selectedVisitor; // Set as the current online visitor
+    console.log(selectedVisitor);
+    localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
+    let visitorInfo = document.getElementById("visitor-info");
+    visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
+    window.location.reload();
+  }
+  // Attach the event listener to the select element
+  selectElement.addEventListener("change", function () {
+    const selectedVisitorName = this.value;
+    const selectedVisitor = visitors.find(
+      (visitor) => visitor.name === selectedVisitorName
+    );
+    console.log(selectedVisitor);
+    if (selectedVisitor) {
+      updateVisitorInfo(selectedVisitor); // Update the nav menu without reloading the page
+    } else {
+      console.error("Selected visitor not found");
+    }
+  });
+
+  if (onlineVisitors.length > 0) {
+    const onlineVisitor = onlineVisitors[0];
+    selectElement.value = onlineVisitor.name; // Set the select element to show the online visitor's name
+  }
   const resetButton = document.getElementById("reset-button");
   if (resetButton) {
     resetButton.addEventListener("click", function () {
@@ -36,20 +53,24 @@ document.addEventListener("DOMContentLoaded", function () {
   showFavoriteAnimal();
   function showVisitedAnimals() {
     // Retrieve online visitors from local storage
-    let onlineVisitors =
-      JSON.parse(localStorage.getItem("onlineVisitors")) || [];
+    visitors = JSON.parse(localStorage.getItem("visitors")) || [];
 
     // Check if there is a visitor logged in
     if (onlineVisitors.length === 0) {
       console.log("No visitor is logged in.");
       return; // Exit the function if no visitor is logged in
     }
+    let matchingVisitorName = onlineVisitors[0].name;
+    console.log(matchingVisitorName);
 
-    // Assuming only one visitor is logged in
-    let visitor = onlineVisitors[0];
+    // Find the visitor in the visitors array that matches the name from onlineVisitors[0]
+    let visitorIndex = visitors.findIndex(
+      (visitor) => visitor.name === matchingVisitorName
+    );
 
     // Access the visitedAnimals array of the logged-in visitor
-    let visitedAnimals = visitor.visitedAnimals || [];
+    let visitedAnimals = visitors[visitorIndex].visitedAnimals || [];
+    console.log(visitedAnimals);
 
     // Display the visited animals on the dashboard
     let visitedAnimalsDiv = document.getElementById("visited-animals");
@@ -57,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update the headline with the visitor's name
     let headline = document.createElement("h2");
-    headline.textContent = "Visited animals of " + visitor.visitorName;
+    headline.textContent = "Visited animals of " + visitors[visitorIndex].name;
     visitedAnimalsDiv.appendChild(headline);
 
     if (visitedAnimals.length === 0) {
@@ -74,29 +95,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showFeededAnimals() {
-    //ממשו את הלוגיקה שמציגה את החיות שהאורח הנוכחי האכיל אותן
-    let onlineVisitors =
-      JSON.parse(localStorage.getItem("onlineVisitors")) || [];
+    visitors = JSON.parse(localStorage.getItem("visitors")) || [];
 
-    // Check if there is a visitor logged in
     if (onlineVisitors.length === 0) {
       console.log("No visitor is logged in.");
-      return; // Exit the function if no visitor is logged in
+      return;
     }
 
-    // Assuming only one visitor is logged in
-    let visitor = onlineVisitors[0];
+    let matchingFeedingName = onlineVisitors[0].name;
+    console.log(matchingFeedingName);
+    let visitorIndex = visitors.findIndex(
+      (visitor) => visitor.name === matchingFeedingName
+    );
 
-    // Access the fedAnimals array of the logged-in visitor
-    let fedAnimals = visitor.feededAnimals || [];
+    // Assuming the property is named 'fedAnimals' and using camelCase
+    let fedAnimals = visitors[visitorIndex].feededAnimals || [];
+    console.log(fedAnimals);
 
-    // Display the fed animals on the dashboard
     let fedAnimalsDiv = document.getElementById("feeded-animals");
-    fedAnimalsDiv.innerHTML = ""; // Clear previous content
+    fedAnimalsDiv.innerHTML = ""; // Ensure this line is uncommented to clear previous content
 
-    // Update the headline with the visitor's name
     let headline = document.createElement("h2");
-    headline.textContent = "Fed animals of " + visitor.visitorName;
+    headline.textContent = "Fed animals of " + visitors[visitorIndex].name;
     fedAnimalsDiv.appendChild(headline);
 
     if (fedAnimals.length === 0) {
@@ -106,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       fedAnimals.forEach((animal) => {
         let animalElement = document.createElement("div");
-        animalElement.textContent = animal.name; // Display the name of the fed animal
+        animalElement.textContent = animal.name; // Assuming 'name' is the correct property in animal objects
         fedAnimalsDiv.appendChild(animalElement);
       });
     }
@@ -124,10 +144,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Assuming only one visitor is logged in
-    let visitor = onlineVisitors[0];
+    let favorite = onlineVisitors[0];
+    let visitorIndex = visitors.findIndex(
+      (visitor) => visitor.name === favorite.name
+    );
 
     // Access the visitedAnimals array of the logged-in visitor
-    let visitedAnimals = visitor.visitedAnimals || [];
+    let visitedAnimals = visitors[visitorIndex].visitedAnimals || [];
 
     // Count occurrences of each animal
     let animalCounts = {};
@@ -149,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let favoriteAnimalDiv = document.getElementById("favorite-animal");
     favoriteAnimalDiv.innerHTML = ""; // Clear previous content
     let headline = document.createElement("h2");
-    headline.textContent = "Favorite Animal of " + visitor.visitorName;
+    headline.textContent = "Favorite Animal of " + visitors[visitorIndex].name;
     favoriteAnimalDiv.appendChild(headline);
     if (favoriteAnimal) {
       let favoriteAnimalElement = document.createElement("div");

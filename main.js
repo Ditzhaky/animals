@@ -5,6 +5,12 @@
 // Save the updated visitors array back to local storage
 let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
 console.log(onlineVisitors);
+const stockImages = [
+  "images/female avatar.jpg",
+  "images/avatar.png",
+
+  // Add paths for all your stock images
+];
 let visitors = [
   {
     name: "John Smith",
@@ -191,10 +197,10 @@ function logout() {
   if (onlineVisitors.length === 0) {
     console.log("No visitor is logged in.");
   } else {
-    let visitorName = onlineVisitors[onlineVisitors.length - 1].visitorName; // Get the name of the last visitor in the array
+    // let visitorName = onlineVisitors[onlineVisitors.length - 1].visitorName; // Get the name of the last visitor in the array
 
     let confirmLogout = confirm(
-      visitorName + " is already login, please log out first "
+      `${onlineVisitors[0].name} is already logged in, please log out first.`
     );
     if (confirmLogout) {
       onlineVisitors.pop(); // Remove existing visitor
