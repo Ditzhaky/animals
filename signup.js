@@ -9,7 +9,7 @@ function createNewVisitor(event) {
   // דוגמא:
 
   const validateFormInputs = () => {
-    const fullName = document.getElementById("Fullname").value;
+    const fullName = document.getElementById("Full-name").value;
     if (!fullName) {
       alert("Please fill out all fields");
       return false; // Return false if validation fails
@@ -28,7 +28,7 @@ function createNewVisitor(event) {
   };
 
   // Retrieve the value of the full name input field
-  const fullName = document.getElementById("Fullname").value;
+  const fullName = document.getElementById("Full-name").value;
 
   // Check if the visitor already exists
   if (visitorExists(fullName)) {
@@ -50,8 +50,8 @@ function createNewVisitor(event) {
       alert(`Welcome, ${name}! You have been registered as a visitor.`);
     };
 
-    window.location.href = "/login.html";
     makeVisitor(fullName);
+    window.location.href = "/login.html";
   }
 }
 

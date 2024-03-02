@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
     let visitorInfo = document.getElementById("visitor-info");
     visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
-    window.location.reload();
+    window.location.href = "zoo.html";
   }
   // Attach the event listener to the select element
   selectElement.addEventListener("change", function () {
