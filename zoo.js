@@ -144,11 +144,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let selectedAnimal = animals.find((animal) => animal.name === animalName);
       visitors[visitorIndex].visitedAnimals.push(selectedAnimal);
-      // visitor[visitorIndex].visitedAnimals.push(selectedAnimal);
+      onlineVisitors[0].visitedAnimals.push(selectedAnimal);
+      localStorage.setItem("selectedAnimal", JSON.stringify(selectedAnimal));
+      localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
       localStorage.setItem("visitors", JSON.stringify(visitors));
       // Update the visitor's data in localStorage
-      localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
-      localStorage.setItem("selectedAnimal", JSON.stringify(selectedAnimal));
       selectedAnimal = JSON.parse(localStorage.getItem("selectedAnimal")) || [];
       console.log(selectedAnimal);
       window.location.href = "animal.html";
