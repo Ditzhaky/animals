@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectElement = document.getElementById("visitor-select");
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
   let visitorInfo = document.getElementById("visitor-info");
-
+  let filteredAnimals = animals;
+  console.log(filteredAnimals);
+  renderFilteredAnimals(filteredAnimals);
   visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
 
   visitors.forEach((visitor) => {
@@ -26,7 +28,15 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     console.log(selectedVisitor);
     if (selectedVisitor) {
-      updateVisitorInfo(selectedVisitor); // Update the nav menu without reloading the page
+      updateVisitorInfo(selectedVisitor);
+      const searchInput = document.getElementById("searchInput");
+      searchInput.value = ""; // Clear search input
+      localStorage.removeItem("filters"); // Remove filters from local storage if any
+
+      // Rerender all animals as the visitor has changed
+      renderAvailableAnimals();
+
+      // Update the nav menu without reloading the page
     } else {
       console.error("Selected visitor not found");
     }
@@ -36,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const onlineVisitor = onlineVisitors[0];
     selectElement.value = onlineVisitor.name; // Set the select element to show the online visitor's name
   }
-  renderAvailableAnimals();
 
   const submitButton = document.getElementById("submitFilters");
   submitButton.addEventListener("click", function () {
@@ -102,6 +111,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const habitatElement = document.createElement("p");
         habitatElement.textContent = `Habitat: ${animal.habitat}`;
 
+        const imageElement = document.createElement("img");
+        imageElement.src = animal.Image; // Assuming 'Image' is the correct property name
+
         // Append elements to the card
         card.appendChild(nameElement);
         card.appendChild(predatorElement);
@@ -109,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
         card.appendChild(heightElement);
         card.appendChild(colorElement);
         card.appendChild(habitatElement);
+        card.appendChild(imageElement);
 
         // Append the card to the container
         animalListContainer.appendChild(card);
@@ -151,6 +164,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Update the visitor's data in localStorage
       selectedAnimal = JSON.parse(localStorage.getItem("selectedAnimal")) || [];
       console.log(selectedAnimal);
+      //צריך לתקן
+
       window.location.href = "animal.html";
     }
   }
@@ -198,7 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   const resetFiltersButton = document.getElementById("resetFilters");
   resetFiltersButton.addEventListener("click", function () {
-    // Clear filters from local storage
+    // Clear filters from local storage  console.log(filters);
+
     localStorage.removeItem("filters");
 
     // Clear input fields and reset checkboxes
@@ -220,15 +236,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // Render all animals again
     renderAvailableAnimals();
   });
-  const searchInput = document.getElementById("searchInput"); //צריך לתקן
+  let searchInput = document.getElementById("searchInput");
+  console.log(searchInput.value);
+  searchInput.value = "";
+  console.log(searchInput.value); // Clear any previous search input
+  //צריך לתקן
   searchInput.addEventListener("input", function () {
     // Get the search query from the input field
-    const query = this.value.trim().toLowerCase();
-
+    let query = this.value.trim().toLowerCase();
+    console.log(searchInput.value);
     // Filter animals based on the search query
-    const filteredAnimals = animals.filter((animal) =>
+    filteredAnimals = animals.filter((animal) =>
       animal.name.toLowerCase().includes(query)
     );
+    console.log(filteredAnimals);
     renderFilteredAnimals(filteredAnimals);
 
     let animalCards = document.querySelectorAll(".animal-card");
@@ -268,18 +289,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const habitatElement = document.createElement("p");
       habitatElement.textContent = `Habitat: ${animal.habitat}`;
+      const imageElement = document.createElement("img");
+      imageElement.src = animal.Image;
       card.appendChild(nameElement);
       card.appendChild(predatorElement);
       card.appendChild(weightElement);
       card.appendChild(heightElement);
       card.appendChild(colorElement);
       card.appendChild(habitatElement);
+      card.appendChild(imageElement);
 
       // Append the card to the container
       animalListContainer.appendChild(card);
     });
   }
-  const filteredAnimals = JSON.parse(localStorage.getItem("filteredAnimals"));
+  filteredAnimals = JSON.parse(localStorage.getItem("filteredAnimals"));
 
   // If there are filtered animals, render them
   if (filteredAnimals) {

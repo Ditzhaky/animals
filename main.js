@@ -6,8 +6,19 @@
 let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
 console.log(onlineVisitors);
 const stockImages = [
-  "images/female avatar.jpg",
   "images/avatar.png",
+  "images/male5.webp",
+  "images/male6.jpg",
+  "images/male7.jpg",
+  "images/man5.jpg",
+  "images/beautiful-woman-avatar.jpg",
+  "images/beautiful-woman-avatar2.jpg",
+  "images/beautiful-woman-avatar3.jpg",
+  "images/beautiful-woman-avatar6.jpg",
+  "images/beautiful-woman4.jpg",
+  "images/beautiful-woman5.jpg",
+  "images/male8.jpg",
+  "images/woman1.jpg",
 
   // Add paths for all your stock images
 ];
@@ -102,6 +113,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/lion.jpg",
   },
   {
     name: "Elephant",
@@ -110,6 +122,7 @@ let animals = [
     height: 200,
     color: "grey",
     habitat: "land",
+    Image: "images/elephant.avif",
   },
   {
     name: "Giraffe",
@@ -118,6 +131,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/giraffe.png",
   },
   {
     name: "Tiger",
@@ -126,6 +140,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/tiger.webp",
   },
   {
     name: "Monkey",
@@ -134,6 +149,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/monkey.jpg",
   },
   {
     name: "Kangaroo",
@@ -142,6 +158,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/kangaroo.avif",
   },
   {
     name: "Penguin",
@@ -150,6 +167,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "sea",
+    Image: "images/penguin.jpg",
   },
   {
     name: "Zebra",
@@ -158,6 +176,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/zebra.webp",
   },
   {
     name: "Cheetah",
@@ -166,6 +185,7 @@ let animals = [
     height: 120,
     color: "brown",
     habitat: "land",
+    Image: "images/cheetah.jpg",
   },
 ];
 

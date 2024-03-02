@@ -1,67 +1,92 @@
+body {
+  background-image: url(./images/leaf.avif);
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
 #selectedAnimal {
+  background-color: #ccc;
   justify-content: center;
   align-items: center;
-  border: 5px solid #ccc; /* Add border around each card */
-  margin-bottom: 200px;
+  border: 5px solid #534a4a; /* Add border around each card */
+  margin-bottom: 50px;
   margin-left: 500px;
   padding: 5px; /* Add padding inside each card */
   border-radius: 5px; /* Add border radius for rounded corners */
-  width: 200px; /* Set a fixed width for each card */
+  width: 450px; /* Set a larger width for each card */
+  height: 450px; /* Set a larger height for each card */
+  font-size: 20px; /* Set a larger font size for the content */
+  backdrop-filter: blur(10px); /* Add a blurred effect to the background */
+  display: flex;
 }
 
-#visitor-cards {
-  display: flex; /* Use flexbox layout */
-  flex-wrap: wrap; /* Allow items to wrap to the next row */
+#selectedAnimal img {
+  margin-left: auto; /* Move the image to the right side */
+  margin-right: 20px; /* Add space to the left of the image */
+  width: 200px; /* Set the width of the image */
+  height: auto; /* Let the height adjust proportionally */
+  border-radius: 5px; /* Add border radius for rounded corners */
 }
+
 #related-animals {
-  display: flex; /* Use flexbox layout */
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 20px; /* כדי להוסיף רווח מתחת */
 }
+
 .animal-card {
-  border: 5px solid #ccc; /* Add border around each card */
+  background-color: #f4f4f4;
+  border: 5px solid #4b3c3c; /* Add border around each card */
+  margin: 10px; /* Add margin between each card */
+  padding: 5px; /* Add padding inside each card */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  width: 200px; /* Set a fixed width for each card */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: #fff;
+  border: 5px solid #726c6c; /* Add border around each card */
   margin: 10px; /* Add margin between each card */
   padding: 5px; /* Add padding inside each card */
   border-radius: 5px; /* Add border radius for rounded corners */
   width: 200px; /* Set a fixed width for each card */
   margin: 10px; /* Add some margin between cards */
 }
-.card {
-  border: 5px solid #ccc; /* Add border around each card */
-  margin: 10px; /* Add margin between each card */
-  padding: 5px; /* Add padding inside each card */
-  border-radius: 5px; /* Add border radius for rounded corners */
-  width: 200px; /* Set a fixed width for each card */
-  margin: 10px; /* Add some margin between cards */
+.card:hover {
+  background-color: #85a0be;
 }
 img {
-  width: 70px;
-  height: 70px;
-}
-#animal-cards {
-  display: flex; /* Use flexbox layout */
-  flex-wrap: wrap; /* Allow items to wrap to the next row */
-  justify-content: center;
-  margin-top: 200px;
+  width: 110px;
+  height: 110px;
 }
 .animal {
-  border: 5px solid #ccc; /* Add border around each card */
+  background-color: #f4f4f4;
+  border: 5px solid #363030; /* Add border around each card */
   margin: 50px; /* Add margin between each card */
   padding: 20px; /* Add padding inside each card */
   border-radius: 5px; /* Add border radius for rounded corners */
 }
+.animal:hover {
+  background-color: #55718e;
+}
+
 #feed-dialog {
-  display: none;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  z-index: 9999; /* כדי להבטיח שה-dialog יהיה הקדמי ביותר */
+  top: 50%; /* המרחק מהחלק העליון של המסך */
+  left: 50%; /* המרחק מהצד השמאלי של המסך */
+  transform: translate(-50%, -50%); /* כדי להביא את ה-dialog למרכז המסך */
+  background-color: white; /* צבע רקע ל-dialog */
+  padding: 20px; /* ריווח מסביב לתוכן */
+  border-radius: 5px; /* פינות מעוגלות */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* הצללה */
 }
 
 #close-dialog {
@@ -74,47 +99,247 @@ img {
   cursor: pointer;
 }
 
-#eaten-dialog {
-  display: none;
+#close-dialog:hover {
+  background-color: #0056b3;
+}
+
+#create-visitor-form {
+  background-color: rgba(255, 255, 255, 0.5); /* שקופיות של 50% */
+  backdrop-filter: blur(10px); /* אפקט מטושטש */
+  width: 300px; /* רוחב הפורם */
+  margin: 0 auto; /* מרכז את הפורם באופן אופקי */
+  padding: 20px; /* ריווח פנימי */
+  border: 1px solid #ccc; /* מסגרת */
+  border-radius: 5px; /* פינות מעוגלות של המסגרת */
+  margin-top: 200px; /* ריווח מלמעלה */
+}
+
+#create-visitor-form input[type="submit"] {
+  align-self: center; /* מרכוז את הכפתור בתוך ה-DIV */
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* יידרך את האלמנטים להיות באמצע */
+}
+
+#visitors-title {
+  font-family: "Papyrus", sans-serif;
+  font-size: 40px; /* Change the font size to your desired value */
+  text-align: center;
+  background-color: rgb(231, 213, 213);
+  margin-bottom: 20px;
+}
+
+#search-container {
+  text-align: center;
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#search-input {
+  width: 100%;
+  max-width: 1490px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 auto;
+}
+
+#visitor-cards {
+  flex-wrap: wrap; /* Allow items to wrap to the next row */
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.visitor-card {
+  width: calc(33.33% - 20px);
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px; /* ריחוף */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s; /* אנימציה על השינוי */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.visitor-card:hover {
+  background-color: #985b5b; /* צבע רקע חדש כאשר מרחף */
+  color: #333; /* צבע טקסט חדש כאשר מרחף */
+}
+
+.visitor-card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.visitor-card p {
+  margin: 10px 0;
+}
+
+#zoo-title {
+  font-family: "Papyrus", sans-serif;
+  font-size: 40px; /* Change the font size to your desired value */
+  text-align: center; /* מרכז את הטקסט באופן אופקי */
+  background-color: grey; /* צבע רקע לכותרת */
+  padding: 10px 0; /* ריווח פנימי של 10 פיקסלים מלמעלה ומלמטה */
+  margin-bottom: 20px; /* ריווח מתחת לכותרת */
+}
+
+#filter-Title {
+  font-family: "Papyrus", sans-serif;
+  font-size: 30px;
+  text-align: center;
+}
+
+#filter-options {
+  background-color: white;
+  margin: 0 auto;
+  width: 50%;
+  border: 2px solid #ccc; /* Add border around the div */
+  padding: 20px; /* Add padding inside the div */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+}
+
+#visitor-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* ליישור האלמנטים לאורך */
+  justify-content: space-between; /* למרחק בין האלמנטים */
+  background-color: lightgray; /* רקע אפור */
+  padding: 10px; /* מרווח מסביב */
+  gap: 10px; /* מרווח בין האלמנטים */
+}
+
+.navList {
+  list-style-type: none;
+  align-items: center;
+  justify-content: end;
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navList a {
+  font-size: 1em;
+  padding: 0 2rem;
+  letter-spacing: 0.3rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: rgb(247, 234, 234);
+  margin-left: 40px;
+}
+
+.navList a:hover {
+  text-shadow: 3px 3px 20px, -2px 1px 30px;
+}
+
+/* CSS for visitor-info container */
+#visitor-info {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+/* CSS for reset-button */
+#reset-button {
+  margin-left: 1rem; /* Add some space between the name and the button */
+}
+
+/* CSS for visitor-select */
+#visitor-select {
+  margin-top: 1rem; /* Add some space between the button and the select */
+}
+
+/* CSS for feed-dialog */
+#feed-dialog {
+  margin-top: 1rem; /* Add some space between the select and the feed dialog */
+}
+
+#search-box {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#filter-options div {
+  margin-bottom: 10px;
+}
+
+#filter-options label {
+  display: inline-block;
+  width: 150px;
+}
+
+#filter-options select,
+#filter-options input[type="number"] {
+  width: 100px;
+}
+
+#filter-options button {
+  display: block;
+  margin: 0 auto;
+}
+
+#searchInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+#resetFilters {
+  display: block;
+  margin: 0 auto;
+  text-align: center; /* Align text in the center */
+  margin-top: 20px; /* Add some top margin */
+}
+
+#animal-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px; /* Adjust margin-top as needed */
+  margin-bottom: 20px; /* Add margin-bottom to separate from other content */
+}
+
+.dashboardInfo {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  background-color: white;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-#close-eaten-dialog {
-  margin-top: 20px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-#escaped-dialog {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  border: 1px solid #ccc;
+.chart-container {
+  margin: 20px 0;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  background: #ffffff; /* Adjust the background as per your theme */
 }
-#close-escaped-dialog {
-  margin-top: 20px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+
+.chart-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+#favorite-animal {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically, if there's enough space */
 }

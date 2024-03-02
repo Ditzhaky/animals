@@ -8,9 +8,14 @@
     <title>Animal</title>
     <script src="./main.js"></script>
   </head>
-  <a href="zoo.html">Go Back to Zoo</a>
-  <a href="dashboard.html" style="margin-left: 1400px">Go to dash</a>
   <body>
+    <nav class="menu">
+      <ul class="navList">
+        <li><a href="./login.html">Visitors</a></li>
+        <li><a href="./zoo.html">Zoo</a></li>
+        <li><a href="./dashboard.html">Dashboard</a></li>
+      </ul>
+    </nav>
     <nav id="visitor-info"></nav>
     <button id="reset-button">Reset</button>
     <select id="visitor-select">
@@ -35,7 +40,7 @@
 
     <div id="selectedAnimal">
       <div id="image">
-        <!-- show here the animal image -->
+        <img id="animal-image" />
       </div>
       <div>
         <h1 id="name"></h1>

@@ -6,24 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoo</title>
     <script src="./main.js"></script>
-    <link rel="stylesheet" href="project.css" />
+    <link rel="stylesheet" href="./project.css" />
   </head>
   <body>
+    <nav class="menu">
+      <ul class="navList">
+        <li><a href="./login.html">Visitors</a></li>
+        <li><a href="./dashboard.html">Dashboard</a></li>
+      </ul>
+    </nav>
     <nav id="visitor-info"></nav>
     <button id="reset-button">Reset</button>
     <select id="visitor-select">
       <!-- Options will be added dynamically using JavaScript -->
     </select>
 
-    <h1>Zoo</h1>
-    <a href="login.html">Go Back to login</a>
-    <a href="animal.html" style="margin-bottom: 0px">Animal</a>
+    <h1 id="zoo-title">Welcome To The Zoo</h1>
     <div>
       <input type="text" id="searchInput" placeholder="Search by name..." />
     </div>
 
     <div id="filter-options">
-      <h2>Filter Options</h2>
+      <h2 id="filter-Title">Filter Options</h2>
       <div>
         <input type="checkbox" id="is-predator" />
         <label for="is-predator">Is Predator</label>
@@ -55,11 +59,8 @@
         </select>
       </div>
       <button id="submitFilters">Submit Filters</button>
+      <button id="resetFilters">Reset Filters</button>
     </div>
-    <div>
-      <button id="resetFilters" style="margin: 10px">Reset Filters</button>
-    </div>
-
     <div id="animal-cards"></div>
     <script src="zoo.js"></script>
   </body>

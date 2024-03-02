@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <script src="./main.js"></script>
-
     <link rel="stylesheet" href="project.css" />
   </head>
   <body>
-    <h1>Visitors</h1>
-    <a href="signup.html">Go Back to Signup</a>
-    <a href="zoo.html" style="margin-left: 1450px">Zoo</a>
+    <nav class="menu">
+      <ul class="navList">
+        <li><a href="./signup.html">Signup</a></li>
+        <li><a href="./dashboard.html">Dashboard</a></li>
+      </ul>
+    </nav>
+    <h1 id="visitors-title">Visitors</h1>
     <input type="text" id="search-input" placeholder="Search for visitors" />
     <div id="visitor-cards"></div>
     <script src="./login.js"></script>

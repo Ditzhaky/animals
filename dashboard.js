@@ -52,46 +52,68 @@ document.addEventListener("DOMContentLoaded", function () {
   showFeededAnimals();
   showFavoriteAnimal();
   function showVisitedAnimals() {
-    // Retrieve online visitors from local storage
-    visitors = JSON.parse(localStorage.getItem("visitors")) || [];
-
-    // Check if there is a visitor logged in
+    let visitors = JSON.parse(localStorage.getItem("visitors")) || [];
     if (onlineVisitors.length === 0) {
       console.log("No visitor is logged in.");
-      return; // Exit the function if no visitor is logged in
+      return;
     }
-    let matchingVisitorName = onlineVisitors[0].name;
-    console.log(matchingVisitorName);
 
-    // Find the visitor in the visitors array that matches the name from onlineVisitors[0]
+    let matchingVisitorName = onlineVisitors[0].name;
     let visitorIndex = visitors.findIndex(
       (visitor) => visitor.name === matchingVisitorName
     );
-
-    // Access the visitedAnimals array of the logged-in visitor
     let visitedAnimals = visitors[visitorIndex].visitedAnimals || [];
-    console.log(visitedAnimals);
+    console.log(visitedAnimals.length);
+    let animalVisitCounts = {};
 
-    // Display the visited animals on the dashboard
-    let visitedAnimalsDiv = document.getElementById("visited-animals");
-    visitedAnimalsDiv.innerHTML = ""; // Clear previous content
+    visitedAnimals.forEach((animal) => {
+      if (animalVisitCounts.hasOwnProperty(animal.name)) {
+        // If the animal name is already in the object, increment the count
+        animalVisitCounts[animal.name]++;
+      } else {
+        // If the animal name is not in the object, initialize it with a count of 1
+        // Assuming each entry in visitedAnimals has a 'name' property
+        animalVisitCounts[animal.name] = 1;
+      }
+    });
 
-    // Update the headline with the visitor's name
-    let headline = document.createElement("h2");
-    headline.textContent = "Visited animals of " + visitors[visitorIndex].name;
-    visitedAnimalsDiv.appendChild(headline);
+    // Prepare data for the chart
+    let labels = Object.keys(animalVisitCounts); // Animal names
+    let data = Object.values(animalVisitCounts); // Corresponding visit counts// Assuming each animal has a 'visits' count
 
-    if (visitedAnimals.length === 0) {
-      let message = document.createElement("p");
-      message.textContent = "No animals visited yet.";
-      visitedAnimalsDiv.appendChild(message);
-    } else {
-      visitedAnimals.forEach((animal) => {
-        let animalElement = document.createElement("div");
-        animalElement.textContent = animal.name; // Display the name of the visited animal
-        visitedAnimalsDiv.appendChild(animalElement);
-      });
-    }
+    renderChart(labels, data, "visitedAnimalsChart", "Visited Animals");
+  }
+  function renderChart(labels, data, canvasId, title) {
+    let ctx = document.getElementById(canvasId).getContext("2d");
+    new Chart(ctx, {
+      type: "bar", // or 'line', 'doughnut', etc.
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: title,
+            data: data,
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              // Controls the ticks on the Y-axis
+              stepSize: 1, // Sets the step size between ticks on the Y-axis
+              // You can also set the minimum and maximum values if you like
+              // min: 0,
+              // max: 100,
+            },
+          },
+        },
+      },
+    });
   }
 
   function showFeededAnimals() {
@@ -111,73 +133,71 @@ document.addEventListener("DOMContentLoaded", function () {
     // Assuming the property is named 'fedAnimals' and using camelCase
     let fedAnimals = visitors[visitorIndex].feededAnimals || [];
     console.log(fedAnimals);
+    let animalFeedCounts = {};
 
-    let fedAnimalsDiv = document.getElementById("feeded-animals");
-    fedAnimalsDiv.innerHTML = ""; // Ensure this line is uncommented to clear previous content
+    fedAnimals.forEach((animal) => {
+      if (animalFeedCounts.hasOwnProperty(animal.name)) {
+        // If the animal name is already in the object, increment the count
+        animalFeedCounts[animal.name]++;
+      } else {
+        // If the animal name is not in the object, initialize it with a count of 1
+        animalFeedCounts[animal.name] = 1;
+      }
+    });
+    let labels = Object.keys(animalFeedCounts); // Animal names
+    let data = Object.values(animalFeedCounts); // Corresponding visit counts// Assuming each animal has a 'visits' count
 
-    let headline = document.createElement("h2");
-    headline.textContent = "Fed animals of " + visitors[visitorIndex].name;
-    fedAnimalsDiv.appendChild(headline);
-
-    if (fedAnimals.length === 0) {
-      let message = document.createElement("p");
-      message.textContent = "No animals fed yet.";
-      fedAnimalsDiv.appendChild(message);
-    } else {
-      fedAnimals.forEach((animal) => {
-        let animalElement = document.createElement("div");
-        animalElement.textContent = animal.name; // Assuming 'name' is the correct property in animal objects
-        fedAnimalsDiv.appendChild(animalElement);
-      });
-    }
+    renderChart(labels, data, "fedAnimalsChart", "Visited Animals");
   }
 
   function showFavoriteAnimal() {
-    // Retrieve online visitors from local storage
     let onlineVisitors =
       JSON.parse(localStorage.getItem("onlineVisitors")) || [];
 
-    // Check if there is a visitor logged in
     if (onlineVisitors.length === 0) {
       console.log("No visitor is logged in.");
-      return; // Exit the function if no visitor is logged in
+      return;
     }
 
-    // Assuming only one visitor is logged in
     let favorite = onlineVisitors[0];
     let visitorIndex = visitors.findIndex(
       (visitor) => visitor.name === favorite.name
     );
+    let visitedAnimals = visitors[visitorIndex]?.visitedAnimals || [];
 
-    // Access the visitedAnimals array of the logged-in visitor
-    let visitedAnimals = visitors[visitorIndex].visitedAnimals || [];
-
-    // Count occurrences of each animal
     let animalCounts = {};
     visitedAnimals.forEach((animal) => {
       animalCounts[animal.name] = (animalCounts[animal.name] || 0) + 1;
     });
 
-    // Find the animal with the maximum occurrences
-    let favoriteAnimal = null;
+    let favoriteAnimalName = null;
     let maxCount = 0;
     for (let animalName in animalCounts) {
       if (animalCounts[animalName] > maxCount) {
         maxCount = animalCounts[animalName];
-        favoriteAnimal = animalName;
+        favoriteAnimalName = animalName;
       }
     }
 
-    // Display the favorite animal on the dashboard
+    let favoriteAnimal = visitedAnimals.find(
+      (animal) => animal.name === favoriteAnimalName
+    );
+
     let favoriteAnimalDiv = document.getElementById("favorite-animal");
     favoriteAnimalDiv.innerHTML = ""; // Clear previous content
     let headline = document.createElement("h2");
-    headline.textContent = "Favorite Animal of " + visitors[visitorIndex].name;
+    headline.textContent = "Favorite Animal of " + favorite.name;
     favoriteAnimalDiv.appendChild(headline);
+
     if (favoriteAnimal) {
       let favoriteAnimalElement = document.createElement("div");
-      favoriteAnimalElement.textContent = favoriteAnimal;
+      favoriteAnimalElement.textContent = favoriteAnimal.name;
       favoriteAnimalDiv.appendChild(favoriteAnimalElement);
+
+      let favoriteAnimalImage = document.createElement("img");
+      favoriteAnimalImage.src = favoriteAnimal.Image; // Assuming the URL is stored in favoriteAnimal.Image
+      favoriteAnimalImage.alt = `Image of ${favoriteAnimal.name}`;
+      favoriteAnimalDiv.appendChild(favoriteAnimalImage);
     } else {
       let message = document.createElement("p");
       message.textContent = "No favorite animal found.";

@@ -5,20 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
-    <a href="animal.html">Go Back to animal</a>
     <link rel="stylesheet" href="project.css" />
-
-    <script src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./main.js" defer></script>
   </head>
   <body>
+    <nav class="menu">
+      <ul class="navList">
+        <li><a href="./login.html">Visitors</a></li>
+        <li><a href="./zoo.html">Zoo</a></li>
+      </ul>
+    </nav>
     <nav id="visitor-info"></nav>
     <button id="reset-button">Reset</button>
     <select id="visitor-select">
       <!-- Options will be added dynamically using JavaScript -->
     </select>
-    <div id="visited-animals"></div>
-    <div id="feeded-animals"></div>
-    <div id="favorite-animal"></div>
-    <script src="./dashboard.js"></script>
+    <div class="dashboardInfo">
+      <div id="visited-animals-chart-container" class="chart-container">
+        <h2>Visited Animals Statistics</h2>
+        <canvas id="visitedAnimalsChart"></canvas>
+      </div>
+      <div id="fed-animals-chart-container" class="chart-container">
+        <h2>Fed Animals Statistics</h2>
+        <canvas id="fedAnimalsChart"></canvas>
+      </div>
+      <!-- You can add more chart containers as needed -->
+      <div id="visited-animals"></div>
+      <div id="feeded-animals"></div>
+      <div id="favorite-animal"></div>
+    </div>
+    <script src="./dashboard.js" defer></script>
   </body>
 </html>
