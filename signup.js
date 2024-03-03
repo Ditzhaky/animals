@@ -52,7 +52,7 @@ function createNewVisitor(event) {
     };
 
     makeVisitor(fullName);
-    window.location.href = "login.html";
+    window.location.href = "/login.html";
   }
 }
 
