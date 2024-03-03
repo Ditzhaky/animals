@@ -62,7 +62,6 @@ function createNewVisitor(event) {
   זהה לאיידי של הטופס בעמוד signup.html
   אין לשנות אותו */
 const createForm = document.getElementById("create-visitor-form");
-console.log(createForm);
 if (createForm) {
   createForm.addEventListener("submit", createNewVisitor);
 }
