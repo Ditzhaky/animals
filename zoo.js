@@ -4,32 +4,49 @@ document.addEventListener("DOMContentLoaded", function () {
   let visitors = JSON.parse(localStorage.getItem("visitors")) || [];
   let visitorInfo = document.getElementById("visitor-info");
   let filteredAnimals = animals; // resets the filteredAnimals
+  let filters = JSON.parse(localStorage.getItem("filters")) || [];
+  loadExistingFilters(); //שמירת פילטרים גם בעת רפרוש
+  function loadExistingFilters() {
+    if (filters.isPredator !== undefined) {
+      document.getElementById("is-predator").checked = filters.isPredator;
+    }
+    if (filters.habitat !== undefined) {
+      document.getElementById("habitat").value = filters.habitat;
+    }
+    if (filters.height !== undefined) {
+      document.getElementById("height").value = filters.height;
+    }
 
-  renderFilteredAnimals(filteredAnimals);
+    if (filters.weight !== undefined) {
+      document.getElementById("weight").value = filters.weight;
+    }
+    if (filters.color !== undefined) {
+      document.getElementById("color").value = filters.color;
+    }
+    if (filters) {
+      // Filters exist, so call renderFilteredAnimals
+      renderFilteredAnimals(animals);
+    } else {
+      // Filters do not exist, so call renderAnimals
+      renderAnimals(animals);
+    }
+  }
   visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
   populateVisitorOptions(selectElement, visitors); //function from main
   handleVisitorSelection(
     selectElement,
     visitors,
     updateVisitorInfo,
-    clearSearchAndFilters,
-    renderAvailableAnimals
-  );
-  //את הפונקציה הזאת בחרתי שלא להכניס למיין כי שיניתי את התפקוד שלה בהתאם לרצונות שלי בכל עמוד
+    loadExistingFilters
+  ); //נועד להתמודד עם שינוי דרך רשימת הדרופ דאון
 
+  //את הפונקציה הזאת בחרתי שלא להכניס למיין כי שיניתי את התפקוד שלה בהתאם לרצונות שלי בכל עמוד
   function updateVisitorInfo(selectedVisitor) {
     onlineVisitors[0] = selectedVisitor; // Set as the current online visitor
     localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
     let visitorInfo = document.getElementById("visitor-info");
     visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
   }
-  function clearSearchAndFilters() {
-    const searchInput = document.getElementById("searchInput");
-    searchInput.value = ""; // Clear search input
-    localStorage.removeItem("filters"); // Remove filters from local storage
-  }
-  // Attach the event listener to the select element
-  renderAvailableAnimals();
 
   selectOnlineVisitor(selectElement, onlineVisitors); //function from main
 
@@ -40,78 +57,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderAvailableAnimals() {
     const animals = JSON.parse(localStorage.getItem("animals")) || [];
-    const filters = JSON.parse(localStorage.getItem("filters")) || {};
     const animalListContainer = document.getElementById("animal-cards");
-    animalListContainer.innerHTML = "";
+    animalListContainer.innerHTML = ""; // Clear existing content
 
     // Iterate over each animal and create a card for it
     animals.forEach((animal) => {
-      // Assume the animal meets the filter criteria by default
-      let meetsFilterCriteria = true;
+      const card = document.createElement("div");
+      card.classList.add("animal");
+      card.addEventListener("click", function () {
+        visitAnimal(animal.name);
+      });
 
-      // Check if the animal meets the filter criteria
-      if (
-        filters.isPredator !== undefined &&
-        animal.isPredator !== filters.isPredator
-      ) {
-        meetsFilterCriteria = false;
-      }
-      if (filters.habitat !== undefined && animal.habitat !== filters.habitat) {
-        meetsFilterCriteria = false;
-      }
-      if (filters.weight !== undefined && animal.weight <= filters.weight) {
-        meetsFilterCriteria = false;
-      }
-      if (filters.height !== undefined && animal.height <= filters.height) {
-        meetsFilterCriteria = false;
-      }
-      if (filters.color !== undefined && animal.color !== filters.color) {
-        meetsFilterCriteria = false;
-      }
+      const nameElement = document.createElement("h2");
+      nameElement.textContent = animal.name;
 
-      // If the animal meets the filter criteria, create its card and append it to the container
-      if (meetsFilterCriteria) {
-        const card = document.createElement("div");
-        card.classList.add("animal");
-        card.addEventListener("click", function () {
-          visitAnimal(animal.name);
-        });
+      const predatorElement = document.createElement("p");
+      predatorElement.textContent = `Predator: ${
+        animal.isPredator ? "Yes" : "No"
+      }`;
 
-        const nameElement = document.createElement("h2");
-        nameElement.textContent = animal.name;
+      const weightElement = document.createElement("p");
+      weightElement.textContent = `Weight: ${animal.weight} kg`;
 
-        const predatorElement = document.createElement("p");
-        predatorElement.textContent = `Predator: ${
-          animal.isPredator ? "Yes" : "No"
-        }`;
+      const heightElement = document.createElement("p");
+      heightElement.textContent = `Height: ${animal.height} cm`;
 
-        const weightElement = document.createElement("p");
-        weightElement.textContent = `Weight: ${animal.weight} kg`;
+      const colorElement = document.createElement("p");
+      colorElement.textContent = `Color: ${animal.color}`;
 
-        const heightElement = document.createElement("p");
-        heightElement.textContent = `Height: ${animal.height} cm`;
+      const habitatElement = document.createElement("p");
+      habitatElement.textContent = `Habitat: ${animal.habitat}`;
 
-        const colorElement = document.createElement("p");
-        colorElement.textContent = `Color: ${animal.color}`;
+      const imageElement = document.createElement("img");
+      imageElement.src = animal.Image; // Ensure 'Image' is the correct property
 
-        const habitatElement = document.createElement("p");
-        habitatElement.textContent = `Habitat: ${animal.habitat}`;
+      // Append elements to the card
+      card.appendChild(nameElement);
+      card.appendChild(predatorElement);
+      card.appendChild(weightElement);
+      card.appendChild(heightElement);
+      card.appendChild(colorElement);
+      card.appendChild(habitatElement);
+      card.appendChild(imageElement);
 
-        const imageElement = document.createElement("img");
-        imageElement.src = animal.Image; // Assuming 'Image' is the correct property name
-
-        // Append elements to the card
-        card.appendChild(nameElement);
-        card.appendChild(predatorElement);
-        card.appendChild(weightElement);
-        card.appendChild(heightElement);
-        card.appendChild(colorElement);
-        card.appendChild(habitatElement);
-        card.appendChild(imageElement);
-
-        // Append the card to the container
-        animalListContainer.appendChild(card);
-      }
+      // Append the card to the container
+      animalListContainer.appendChild(card);
     });
   }
 
@@ -188,65 +178,104 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("filters", JSON.stringify(filters));
 
     // Render animals based on the updated filters
-    renderAvailableAnimals();
-
+    renderFilteredAnimals(filteredAnimals);
     // Log the filters to see the result
   }
   const resetFiltersButton = document.getElementById("reset-filters");
   resetFiltersButton.addEventListener("click", function () {
-    // Clear filters from local storage
-
+    resetFiltersAndSearch(); // Call the reset function when the reset button is clicked
+  });
+  function resetFiltersAndSearch() {
+    // Clear filters and search query from local storage
     localStorage.removeItem("filters");
+    localStorage.removeItem("searchQuery");
 
     // Clear input fields and reset checkboxes
-    const isPredatorCheckbox = document.getElementById("is-predator");
-    isPredatorCheckbox.checked = false;
+    document.getElementById("is-predator").checked = false;
+    document.getElementById("habitat").selectedIndex = 0;
+    document.getElementById("weight").value = "";
+    document.getElementById("height").value = "";
+    document.getElementById("color").selectedIndex = 0;
 
-    const habitatSelect = document.getElementById("habitat");
-    habitatSelect.selectedIndex = 0;
-
-    const weightInput = document.getElementById("weight");
-    weightInput.value = "";
-
-    const heightInput = document.getElementById("height");
-    heightInput.value = "";
-
-    const colorSelect = document.getElementById("color");
-    colorSelect.selectedIndex = 0;
+    // Clear the search input field
+    document.getElementById("searchInput").value = "";
 
     // Render all animals again
     renderAvailableAnimals();
-  });
+  }
   let searchInput = document.getElementById("searchInput");
-  searchInput.value = "";
-  searchInput.addEventListener("input", function () {
-    // Get the search query from the input field
-    let query = this.value.trim().toLowerCase();
-    // Filter animals based on the search query
-    filteredAnimals = animals.filter((animal) =>
-      animal.name.toLowerCase().includes(query)
-    );
-    renderFilteredAnimals(filteredAnimals);
+  let savedQuery = localStorage.getItem("searchQuery");
+  searchInputHandle();
+  function searchInputHandle() {
+    if (savedQuery) {
+      searchInput.value = savedQuery; // Restore the search query to the input field
 
-    let animalCards = document.querySelectorAll(".animal-card");
-    animalCards.forEach((card) => {
-      card.addEventListener("click", visitAnimal);
+      // Perform the search with the restored query
+      filteredAnimals = animals.filter((animal) =>
+        animal.name.toLowerCase().includes(savedQuery)
+      );
+      renderFilteredAnimals(filteredAnimals);
+    }
+
+    searchInput.addEventListener("input", function () {
+      let query = this.value.trim().toLowerCase();
+
+      // Save the search query to local storage
+      localStorage.setItem("searchQuery", query);
+
+      // Filter animals based on the search query
+      filteredAnimals = animals.filter((animal) =>
+        animal.name.toLowerCase().includes(query)
+      );
+      renderFilteredAnimals(filteredAnimals);
+
+      let animalCards = document.querySelectorAll(".animal-card");
+      animalCards.forEach((card) => {
+        card.addEventListener("click", visitAnimal);
+      });
     });
-  });
+  }
 
   function renderFilteredAnimals(filteredAnimals) {
+    const filters = JSON.parse(localStorage.getItem("filters")) || {};
     const animalListContainer = document.getElementById("animal-cards");
     animalListContainer.innerHTML = ""; // Clear existing content
-    localStorage.setItem("filteredAnimals", JSON.stringify(filteredAnimals));
-    // Iterate over each filtered animal and create a card for it
-    filteredAnimals.forEach((animal) => {
+
+    // Further filter the 'filteredAnimals' array based on filters from local storage, if any
+    const furtherFilteredAnimals = filteredAnimals.filter((animal) => {
+      const meetsIsPredator =
+        filters.isPredator !== undefined
+          ? animal.isPredator === filters.isPredator
+          : true;
+      const meetsHabitat =
+        filters.habitat !== undefined
+          ? animal.habitat === filters.habitat
+          : true;
+      const meetsWeight =
+        filters.weight !== undefined ? animal.weight >= filters.weight : true;
+      const meetsHeight =
+        filters.height !== undefined ? animal.height >= filters.height : true;
+      const meetsColor =
+        filters.color !== undefined ? animal.color === filters.color : true;
+
+      return (
+        meetsIsPredator &&
+        meetsHabitat &&
+        meetsWeight &&
+        meetsHeight &&
+        meetsColor
+      );
+    });
+
+    // Iterate over each further filtered animal and create a card for it
+    furtherFilteredAnimals.forEach((animal) => {
       const card = document.createElement("div");
       card.classList.add("animal");
       card.addEventListener("click", function () {
         visitAnimal(animal.name);
       });
 
-      // Create elements for animal data
+      // Add animal details to the card
       const nameElement = document.createElement("h2");
       nameElement.textContent = animal.name;
       const predatorElement = document.createElement("p");
@@ -275,20 +304,9 @@ document.addEventListener("DOMContentLoaded", function () {
       card.appendChild(habitatElement);
       card.appendChild(imageElement);
 
-      // Append the card to the container
       animalListContainer.appendChild(card);
     });
   }
-  filteredAnimals = JSON.parse(localStorage.getItem("filteredAnimals"));
 
-  // If there are filtered animals, render them
-  if (filteredAnimals) {
-    renderFilteredAnimals(filteredAnimals);
-  } else {
-    // If there are no filtered animals, render all animals
-    renderAvailableAnimals();
-  }
-  // Get the select element
-
-  setupResetButton("reset-button", "/login.html");
+  setupResetButton("reset-button", "/login.html"); //כפתור ריסט שמחזיר אותנו לדף הלוגין
 });

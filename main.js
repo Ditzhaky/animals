@@ -1,7 +1,7 @@
 // מערכים גלובלים שישמשו אותנו בכל העמודים
 
 let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
-
+//מציגה אורחים בדרופ דאון
 function populateVisitorOptions(selectElement, visitors) {
   visitors.forEach((visitor) => {
     const option = document.createElement("option");
@@ -15,8 +15,7 @@ function handleVisitorSelection(
   selectElement,
   visitors,
   updateVisitorInfoCallback,
-  clearSearchAndFiltersCallback,
-  renderAvailableAnimalsCallback
+  loadExistingFiltersCallback
 ) {
   selectElement.addEventListener("change", function () {
     const selectedVisitorName = this.value;
@@ -31,8 +30,8 @@ function handleVisitorSelection(
         clearSearchAndFiltersCallback();
       }
 
-      if (renderAvailableAnimalsCallback) {
-        renderAvailableAnimalsCallback();
+      if (loadExistingFiltersCallback) {
+        loadExistingFiltersCallback();
       }
 
       // Make sure this function is accessible in this context

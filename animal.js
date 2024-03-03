@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
     let visitorInfo = document.getElementById("visitor-info");
     visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
-    window.location.href = "zoo.html";
+    window.location.href = "zoo.html"; //בעת שינוי דרך הדרופ דאון החלטתי שהגיוני יהיה לחזור למסך גן החיות.
   }
 
   setupResetButton("reset-button", "/login.html"); //main.js func
