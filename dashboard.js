@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
   let visitorInfo = document.getElementById("visitor-info");
   let visitors = JSON.parse(localStorage.getItem("visitors")) || []; // Ensure you have this data available
-
   visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
   handleVisitorSelection(selectElement, visitors, updateVisitorInfo); //main
 

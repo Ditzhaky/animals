@@ -9,7 +9,8 @@ function createNewVisitor(event) {
   // דוגמא:
 
   const validateFormInputs = () => {
-    const fullName = document.getElementById("Full-name").value;
+    const fullName = document.getElementById("full-name").value;
+
     if (!fullName) {
       alert("Please fill out all fields");
       return false; // Return false if validation fails
@@ -28,7 +29,7 @@ function createNewVisitor(event) {
   };
 
   // Retrieve the value of the full name input field
-  const fullName = document.getElementById("Full-name").value;
+  const fullName = document.getElementById("full-name").value;
 
   // Check if the visitor already exists
   if (visitorExists(fullName)) {
@@ -61,6 +62,7 @@ function createNewVisitor(event) {
   זהה לאיידי של הטופס בעמוד signup.html
   אין לשנות אותו */
 const createForm = document.getElementById("create-visitor-form");
+console.log(createForm);
 if (createForm) {
   createForm.addEventListener("submit", createNewVisitor);
 }
