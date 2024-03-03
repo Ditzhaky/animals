@@ -1,9 +1,9 @@
 body {
   background-image: url(./images/leaf.avif);
-  font-family: Arial, sans-serif;
   background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
+  margin: 2px;
+  padding: 2px;
+  font-family: "Papyrus", sans-serif;
 }
 
 #selectedAnimal {
@@ -77,7 +77,9 @@ img {
   background-color: #55718e;
 }
 
-#feed-dialog {
+#feed-dialog,
+#escaped-dialog,
+#eaten-dialog {
   position: fixed;
   z-index: 9999; /* כדי להבטיח שה-dialog יהיה הקדמי ביותר */
   top: 50%; /* המרחק מהחלק העליון של המסך */
@@ -89,7 +91,9 @@ img {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* הצללה */
 }
 
-#close-dialog {
+#close-dialog,
+#close-eaten-dialog,
+#close-escaped-dialog {
   margin-top: 20px;
   padding: 8px 16px;
   background-color: #007bff;
@@ -99,7 +103,9 @@ img {
   cursor: pointer;
 }
 
-#close-dialog:hover {
+#close-dialog:hover,
+#close-eaten-dialog:hover,
+#close-escaped-dialog:hover {
   background-color: #0056b3;
 }
 
@@ -128,7 +134,6 @@ img {
 }
 
 #visitors-title {
-  font-family: "Papyrus", sans-serif;
   font-size: 40px; /* Change the font size to your desired value */
   text-align: center;
   background-color: rgb(231, 213, 213);
@@ -190,7 +195,6 @@ img {
 }
 
 #zoo-title {
-  font-family: "Papyrus", sans-serif;
   font-size: 40px; /* Change the font size to your desired value */
   text-align: center; /* מרכז את הטקסט באופן אופקי */
   background-color: grey; /* צבע רקע לכותרת */
@@ -199,7 +203,6 @@ img {
 }
 
 #filter-Title {
-  font-family: "Papyrus", sans-serif;
   font-size: 30px;
   text-align: center;
 }
@@ -216,16 +219,16 @@ img {
 }
 
 #visitor-info {
-  display: flex;
-  flex-direction: row;
-  align-items: center; /* ליישור האלמנטים לאורך */
-  justify-content: space-between; /* למרחק בין האלמנטים */
-  background-color: lightgray; /* רקע אפור */
-  padding: 10px; /* מרווח מסביב */
-  gap: 10px; /* מרווח בין האלמנטים */
+  font-size: 30px; /* Adjust the size as needed */
+  text-align: center; /* Centers the text horizontally */
+
+  width: 100%; /* Ensures the nav element takes up the full width */
+  line-height: 50px;
+  color: white;
+  background-color: #44502b;
 }
 
-.navList {
+.nav-list {
   list-style-type: none;
   align-items: center;
   justify-content: end;
@@ -235,7 +238,7 @@ img {
   z-index: 1000;
 }
 
-.navList a {
+.nav-list a {
   font-size: 1em;
   padding: 0 2rem;
   letter-spacing: 0.3rem;
@@ -245,7 +248,7 @@ img {
   margin-left: 40px;
 }
 
-.navList a:hover {
+.nav-list a:hover {
   text-shadow: 3px 3px 20px, -2px 1px 30px;
 }
 
@@ -256,13 +259,61 @@ img {
 }
 
 /* CSS for reset-button */
-#reset-button {
-  margin-left: 1rem; /* Add some space between the name and the button */
+#reset-button,
+#reset-filters,
+#submit-filters {
+  margin: 1rem; /* Add some space between the name and the button */
+  font-family: "Papyrus", sans-serif;
+  font-size: 16px; /* Matching font size */
+  color: #fff; /* Light text color for better contrast */
+  background-color: #007bff; /* A nice blue that stands out */
+
+  /* Padding and dimensions */
+  padding: 8px; /* Adjust padding to make the button more prominent */
+  width: auto; /* Auto width based on content and padding */
+  max-width: 300px; /* Maximum width to match the select element, if needed */
+  display: inline-block; /* Allows setting dimensions */
+
+  margin: 10px;
+  border: none; /* No border for a modern flat look */
+  border-radius: 5px; /* Rounded corners to match the select element */
+  outline: none; /* Removes the default focus outline */
+
+  /* Background and appearance */
+  cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+#reset-button:hover,
+#reset-filters:hover,
+#submit-filters:hover {
+  background-color: #0056b3; /* Darker shade of blue on hover for a nice interactive effect */
+}
+#reset-button:focus,
+#reset-filters:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Adds a light blue glow around the button when focused for accessibility */
 }
 
 /* CSS for visitor-select */
 #visitor-select {
+  font-family: "Papyrus", sans-serif;
+  font-size: 16px;
   margin-top: 1rem; /* Add some space between the button and the select */
+  padding: 8px 16px; /* Adds some padding inside the select box */
+  border: 2px solid #007bff; /* Sets a solid border with a color */
+  border-radius: 5px; /* Rounds the corners of the select box */
+  background-color: white; /* Sets the background color */
+  cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+  font-size: 16px; /* Increases the font size for better readability */
+  color: #333; /* Sets the text color */
+  outline: none; /* Removes the outline to avoid a box shadow on focus */
+}
+#visitor-select option {
+  padding: 10px; /* Adds some padding for each option */
+  background: #f8f9fa; /* Sets a background color for options */
+}
+#visitor-select option:hover {
+  background-color: #007bff; /* Changes background color on hover */
+  color: white; /* Changes text color on hover */
 }
 
 /* CSS for feed-dialog */
@@ -273,6 +324,12 @@ img {
 #search-box {
   width: 100%;
   box-sizing: border-box;
+}
+#searchInput {
+  font-family: "Papyrus", sans-serif;
+}
+#search-input {
+  font-family: "Papyrus", sans-serif;
 }
 
 #filter-options div {
@@ -291,20 +348,13 @@ img {
 
 #filter-options button {
   display: block;
-  margin: 0 auto;
+  margin: 3px;
 }
 
 #searchInput {
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
-}
-
-#resetFilters {
-  display: block;
-  margin: 0 auto;
-  text-align: center; /* Align text in the center */
-  margin-top: 20px; /* Add some top margin */
 }
 
 #animal-cards {
@@ -342,4 +392,41 @@ img {
   flex-direction: column; /* Stack items vertically */
   align-items: center; /* Center items horizontally */
   justify-content: center; /* Center items vertically, if there's enough space */
+}
+/* project.css */
+.login-button {
+  margin-top: 10px;
+  padding: 8px 15px; /* Padding inside the button */
+  background-color: #fdfdfd; /* Button color */
+  color: rgb(3, 3, 3); /* Text color */
+  border: none; /* Removes the default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  text-decoration: none; /* Removes underline from text */
+}
+
+.login-button:hover {
+  background-color: #000000; /* Slightly darker shade on hover */
+  color: rgb(255, 255, 255); /* Text color */
+}
+.input-group {
+  display: flex; /* Enables Flexbox layout */
+  align-items: center; /* Aligns children vertically at the center */
+}
+
+.input-group input[type="text"] {
+  flex-grow: 1; /* Allows the text input to take up available space */
+  margin-right: 8px; /* Adds some space between the text input and the submit button */
+}
+
+.button-container {
+  text-align: right; /* Aligns the content (the button) to the right */
+  margin-top: 10px; /* Adds some space above the button */
+}
+#label-visitor-select {
+  margin-right: 10px; /* Adjusts space between the label/span and the select element */
+  display: inline-block; /* Ensures the label/span is inline but can have margins */
+  vertical-align: middle;
+  font-size: 16px;
+  color: white;
 }

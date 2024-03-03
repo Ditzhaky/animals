@@ -10,17 +10,28 @@
   </head>
 
   <body>
-    <a href="login.html" style="color: #97abc1;text-decoration:none ;">or move stright to login page</a>
-
     <form id="create-visitor-form">
       <div>
-        <h1> Welcome To The Zoo </h1>
-        <p>Please enter your full name and click "Submit"</p>
-      <label for="Full-name">Full name:</label>
-      <input type="text" id="Full-name" name="Fullname"></br>
-      <br></br>
-      <input type="submit"></input>
-    </div>
+        <h1>Welcome To The Zoo</h1>
+        <p>
+          Please enter your full name and click "Submit" or choose an existing
+          visitor
+        </p>
+        <label for="Full-name">Full name:</label>
+        <div class="input-group">
+          <input type="text" id="full-name" name="fullname" />
+          <input type="submit" value="Submit" />
+        </div>
+        <div class="button-container">
+          <button
+            type="button"
+            onclick="window.location.href='login.html';"
+            class="login-button"
+          >
+            Choose an existing visitor
+          </button>
+        </div>
+      </div>
     </form>
     <!-- צרו טופס יצירת אורח חדש -->
     <!-- לאחר יצירה, הוסיפו אותו למערך האורחים ושמרו את מערך האורחים המעודכן בלוקל סטורג' -->

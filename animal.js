@@ -2,65 +2,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectElement = document.getElementById("visitor-select");
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
   let visitorInfo = document.getElementById("visitor-info");
-
-  console.log(onlineVisitors[0].name);
+  let visitors = JSON.parse(localStorage.getItem("visitors")) || [];
   visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
-
-  visitors.forEach((visitor) => {
-    const option = document.createElement("option");
-    option.textContent = visitor.name;
-    option.value = visitor.name;
-    selectElement.appendChild(option);
-  });
+  handleVisitorSelection(selectElement, visitors, updateVisitorInfo); //main.js function
+  populateVisitorOptions(selectElement, visitors); //main.js function
+  //את הפונקציה הזאת בחרתי שלא להכניס למיין כי שיניתי את התפקוד שלה בהתאם לרצונות שלי בכל עמוד
   function updateVisitorInfo(selectedVisitor) {
     onlineVisitors[0] = selectedVisitor; // Set as the current online visitor
-    console.log(selectedVisitor);
     localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
     let visitorInfo = document.getElementById("visitor-info");
     visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
     window.location.href = "zoo.html";
   }
-  // Attach the event listener to the select element
-  selectElement.addEventListener("change", function () {
-    const selectedVisitorName = this.value;
-    const selectedVisitor = visitors.find(
-      (visitor) => visitor.name === selectedVisitorName
-    );
-    console.log(selectedVisitor);
-    if (selectedVisitor) {
-      updateVisitorInfo(selectedVisitor);
-      const searchInput = document.getElementById("searchInput");
-      searchInput.value = ""; // Clear search input
-      localStorage.removeItem("filters"); // Remove filters from local storage if any
 
-      // Rerender all animals as the visitor has changed
-      renderAvailableAnimals();
-      // Update the nav menu without reloading the page
-    } else {
-      console.error("Selected visitor not found");
-    }
-  });
+  setupResetButton("reset-button", "/login.html"); //main.js func
 
-  if (onlineVisitors.length > 0) {
-    const onlineVisitor = onlineVisitors[0];
-    selectElement.value = onlineVisitor.name; // Set the select element to show the online visitor's name
-  }
-
-  const resetButton = document.getElementById("reset-button");
-  if (resetButton) {
-    resetButton.addEventListener("click", function () {
-      // Clear all local storage data
-      localStorage.clear();
-      // Redirect to the home page or any other desired page
-      window.location.href = "/login.html";
-    });
-  }
+  selectOnlineVisitor(selectElement, onlineVisitors); //main.js func
 
   let feedButton = document.getElementById("feed-animal");
   if (feedButton) {
     feedButton.addEventListener("click", feedAnimal);
   } else {
-    console.error("Feed button not found.");
+    alert("Feed button not found.");
   }
 
   // Call the render functions to display animals when the page loads
@@ -74,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check if there is a visitor logged in
     if (onlineVisitors.length === 0) {
-      console.log("No visitor is logged in.");
+      alert("No visitor is logged in.");
       return; // Exit the function if no visitor is logged in
     }
 
@@ -94,10 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return v;
       });
-      localStorage.setItem("visitors", JSON.stringify(visitors));
-      localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
-      console.log("Animal has been fed successfully.");
-      console.log("Visitor's coins remaining: " + visitor.coins);
+      localStorage.setItem("visitors", JSON.stringify(visitors)); //updates the visitors data
+      localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); //updates the onlineVisitors data
       renderAnimal();
       renderRelatedAnimals();
       visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
@@ -122,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderAnimal() {
     // Retrieve the selected animal from local storage
     let selectedAnimal = JSON.parse(localStorage.getItem("selectedAnimal"));
-    console.log(selectedAnimal);
+
     // Check if an animal is selected
     if (selectedAnimal) {
       // Display the selected animal's details on the animal page
@@ -140,13 +101,13 @@ document.addEventListener("DOMContentLoaded", function () {
         "habitat"
       ).textContent = `Habitat: ${selectedAnimal.habitat}`;
       document.getElementById("isPredator").textContent = `Predator: ${
-        selectedAnimal.isPredator ? "True" : "False"
+        selectedAnimal.isPredator ? "Yes" : "No"
       }`;
       document.getElementById("animal-image").src = selectedAnimal.Image;
       renderRelatedAnimals();
     } else {
       // Handle the case when no animal is selected
-      console.log("No animal selected.");
+      alert("No animal selected.");
     }
   }
   function renderRelatedAnimals() {
@@ -206,9 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedAnimal.isPredator
     ) {
       // Remove the visitor from the onlineVisitors array
-      onlineVisitors = onlineVisitors.filter(
-        (v) => v.visitorName !== visitor.name
-      );
+      onlineVisitors = onlineVisitors.filter((v) => v.name !== visitor.name);
       localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
 
       // Remove the visitor from the visitors array

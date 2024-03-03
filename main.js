@@ -1,10 +1,64 @@
 // מערכים גלובלים שישמשו אותנו בכל העמודים
 
-// Check if each visitor object has the inUse property; if not, initialize it to false
-
-// Save the updated visitors array back to local storage
 let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
-console.log(onlineVisitors);
+
+function populateVisitorOptions(selectElement, visitors) {
+  visitors.forEach((visitor) => {
+    const option = document.createElement("option");
+    option.textContent = visitor.name;
+    option.value = visitor.name;
+    selectElement.appendChild(option);
+  });
+}
+//updates the require data with event listener
+function handleVisitorSelection(
+  selectElement,
+  visitors,
+  updateVisitorInfoCallback,
+  clearSearchAndFiltersCallback,
+  renderAvailableAnimalsCallback
+) {
+  selectElement.addEventListener("change", function () {
+    const selectedVisitorName = this.value;
+    const selectedVisitor = visitors.find(
+      (visitor) => visitor.name === selectedVisitorName
+    );
+
+    if (selectedVisitor) {
+      updateVisitorInfoCallback(selectedVisitor);
+
+      if (clearSearchAndFiltersCallback) {
+        clearSearchAndFiltersCallback();
+      }
+
+      if (renderAvailableAnimalsCallback) {
+        renderAvailableAnimalsCallback();
+      }
+
+      // Make sure this function is accessible in this context
+    } else {
+      console.error("Selected visitor not found");
+    }
+  });
+}
+//handle the selection
+function selectOnlineVisitor(selectElement, onlineVisitors) {
+  if (onlineVisitors.length > 0) {
+    const onlineVisitor = onlineVisitors[0]; // Assuming the first visitor is the currently online one
+    selectElement.value = onlineVisitor.name; // Set the dropdown to show the online visitor's name
+  }
+}
+// resets the data in the local storage
+function setupResetButton(buttonId) {
+  const resetButton = document.getElementById(buttonId);
+  if (resetButton) {
+    resetButton.addEventListener("click", function () {
+      localStorage.clear(); // Clears all local storage data
+      window.location.href = "/login.html";
+    });
+  }
+}
+//מערך של תמונות
 const stockImages = [
   "images/avatar.png",
   "images/male5.webp",
@@ -19,8 +73,6 @@ const stockImages = [
   "images/beautiful-woman5.jpg",
   "images/male8.jpg",
   "images/woman1.jpg",
-
-  // Add paths for all your stock images
 ];
 let visitors = [
   {
@@ -226,7 +278,6 @@ function logout() {
       onlineVisitors.pop(); // Remove existing visitor
       localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
       console.log("Logged out successfully.");
-      console.log(onlineVisitors);
     } else {
       console.log("Logout canceled.");
     }

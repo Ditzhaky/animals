@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("visitors", JSON.stringify(visitors));
       }
 
-      // Check if the visitor doesn't have the 'favoriteAnimals' array
+      // Check if the visitor doesn't have the 'feededAnimals' array
       if (!visitor.feededAnimals) {
         visitor.feededAnimals = []; // Initialize 'favoriteAnimals' as an empty array
         localStorage.setItem("visitors", JSON.stringify(visitors));
@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors));
       alert("Welcome to the zoo, " + visitorName);
-      console.log(onlineVisitors);
 
       // Redirect to the zoo page
       window.location.href = "zoo.html"; // Replace "zoo.html" with the actual URL of your zoo page
@@ -76,9 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
     coinsElement.textContent = `Coins: ${visitor.coins}`;
 
     const imageElement = document.createElement("img");
-    // imageElement.src = "images/avatar.png"; // Replace with actual image source
-    const randomIndex = Math.floor(Math.random() * stockImages.length);
-    imageElement.src = stockImages[randomIndex];
+    const randomIndex = Math.floor(Math.random() * stockImages.length); // randomly puts an integer inside randomIndex
+    imageElement.src = stockImages[randomIndex]; //puts a random photo inside visitor card by the randomIndex
 
     // Append elements to the card
     card.appendChild(nameElement);

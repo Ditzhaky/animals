@@ -1,53 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
   const selectElement = document.getElementById("visitor-select");
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
+  let visitors = JSON.parse(localStorage.getItem("visitors")) || [];
   let visitorInfo = document.getElementById("visitor-info");
-  let filteredAnimals = animals;
-  console.log(filteredAnimals);
+  let filteredAnimals = animals; // resets the filteredAnimals
+
   renderFilteredAnimals(filteredAnimals);
   visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
+  populateVisitorOptions(selectElement, visitors); //function from main
+  handleVisitorSelection(
+    selectElement,
+    visitors,
+    updateVisitorInfo,
+    clearSearchAndFilters,
+    renderAvailableAnimals
+  );
+  //את הפונקציה הזאת בחרתי שלא להכניס למיין כי שיניתי את התפקוד שלה בהתאם לרצונות שלי בכל עמוד
 
-  visitors.forEach((visitor) => {
-    const option = document.createElement("option");
-    option.textContent = visitor.name;
-    option.value = visitor.name;
-    selectElement.appendChild(option);
-  });
   function updateVisitorInfo(selectedVisitor) {
     onlineVisitors[0] = selectedVisitor; // Set as the current online visitor
-    console.log(selectedVisitor);
     localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
     let visitorInfo = document.getElementById("visitor-info");
     visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
   }
-  // Attach the event listener to the select element
-  selectElement.addEventListener("change", function () {
-    const selectedVisitorName = this.value;
-    const selectedVisitor = visitors.find(
-      (visitor) => visitor.name === selectedVisitorName
-    );
-    console.log(selectedVisitor);
-    if (selectedVisitor) {
-      updateVisitorInfo(selectedVisitor);
-      const searchInput = document.getElementById("searchInput");
-      searchInput.value = ""; // Clear search input
-      localStorage.removeItem("filters"); // Remove filters from local storage if any
-
-      // Rerender all animals as the visitor has changed
-      renderAvailableAnimals();
-
-      // Update the nav menu without reloading the page
-    } else {
-      console.error("Selected visitor not found");
-    }
-  });
-
-  if (onlineVisitors.length > 0) {
-    const onlineVisitor = onlineVisitors[0];
-    selectElement.value = onlineVisitor.name; // Set the select element to show the online visitor's name
+  function clearSearchAndFilters() {
+    const searchInput = document.getElementById("searchInput");
+    searchInput.value = ""; // Clear search input
+    localStorage.removeItem("filters"); // Remove filters from local storage
   }
+  // Attach the event listener to the select element
+  renderAvailableAnimals();
 
-  const submitButton = document.getElementById("submitFilters");
+  selectOnlineVisitor(selectElement, onlineVisitors); //function from main
+
+  const submitButton = document.getElementById("submit-filters");
   submitButton.addEventListener("click", function () {
     setFilter();
   });
@@ -96,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const predatorElement = document.createElement("p");
         predatorElement.textContent = `Predator: ${
-          animal.isPredator ? "True" : "False"
+          animal.isPredator ? "Yes" : "No"
         }`;
 
         const weightElement = document.createElement("p");
@@ -141,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check if there is a visitor logged in
     if (onlineVisitors.length === 0) {
-      console.log("No visitor is logged in.");
       return; // Exit the function if no visitor is logged in
     }
 
@@ -163,9 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("visitors", JSON.stringify(visitors));
       // Update the visitor's data in localStorage
       selectedAnimal = JSON.parse(localStorage.getItem("selectedAnimal")) || [];
-      console.log(selectedAnimal);
-      //צריך לתקן
-
       window.location.href = "animal.html";
     }
   }
@@ -209,11 +191,10 @@ document.addEventListener("DOMContentLoaded", function () {
     renderAvailableAnimals();
 
     // Log the filters to see the result
-    console.log(filters);
   }
-  const resetFiltersButton = document.getElementById("resetFilters");
+  const resetFiltersButton = document.getElementById("reset-filters");
   resetFiltersButton.addEventListener("click", function () {
-    // Clear filters from local storage  console.log(filters);
+    // Clear filters from local storage
 
     localStorage.removeItem("filters");
 
@@ -237,19 +218,14 @@ document.addEventListener("DOMContentLoaded", function () {
     renderAvailableAnimals();
   });
   let searchInput = document.getElementById("searchInput");
-  console.log(searchInput.value);
   searchInput.value = "";
-  console.log(searchInput.value); // Clear any previous search input
-  //צריך לתקן
   searchInput.addEventListener("input", function () {
     // Get the search query from the input field
     let query = this.value.trim().toLowerCase();
-    console.log(searchInput.value);
     // Filter animals based on the search query
     filteredAnimals = animals.filter((animal) =>
       animal.name.toLowerCase().includes(query)
     );
-    console.log(filteredAnimals);
     renderFilteredAnimals(filteredAnimals);
 
     let animalCards = document.querySelectorAll(".animal-card");
@@ -275,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
       nameElement.textContent = animal.name;
       const predatorElement = document.createElement("p");
       predatorElement.textContent = `Predator: ${
-        animal.isPredator ? "True" : "False"
+        animal.isPredator ? "Yes" : "No"
       }`;
 
       const weightElement = document.createElement("p");
@@ -314,13 +290,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // Get the select element
 
-  const resetButton = document.getElementById("reset-button");
-  if (resetButton) {
-    resetButton.addEventListener("click", function () {
-      // Clear all local storage data
-      localStorage.clear();
-      // Redirect to the home page or any other desired page
-      window.location.href = "/login.html";
-    });
-  }
+  setupResetButton("reset-button", "/login.html");
 });

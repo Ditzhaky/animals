@@ -2,51 +2,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectElement = document.getElementById("visitor-select");
   let onlineVisitors = JSON.parse(localStorage.getItem("onlineVisitors")) || [];
   let visitorInfo = document.getElementById("visitor-info");
+  let visitors = JSON.parse(localStorage.getItem("visitors")) || []; // Ensure you have this data available
 
-  console.log(onlineVisitors[0].name);
   visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Update the nav menu
+  handleVisitorSelection(selectElement, visitors, updateVisitorInfo); //main
 
-  visitors.forEach((visitor) => {
-    const option = document.createElement("option");
-    option.textContent = visitor.name;
-    option.value = visitor.name;
-    selectElement.appendChild(option);
-  });
+  populateVisitorOptions(selectElement, visitors); //main
+
   function updateVisitorInfo(selectedVisitor) {
     onlineVisitors[0] = selectedVisitor; // Set as the current online visitor
-    console.log(selectedVisitor);
     localStorage.setItem("onlineVisitors", JSON.stringify(onlineVisitors)); // Update local storage
     let visitorInfo = document.getElementById("visitor-info");
     visitorInfo.innerHTML = `${onlineVisitors[0].name} - Coins: ${onlineVisitors[0].coins}`; // Correct property access
-    window.location.reload();
+    window.location.reload(); // העדפתי שלא להשתמש ברילוד בגלל חווית המשתמש, אבל הסתבכתי עם טבלת הסטטיסטיקה שלקחנו ולא רצינו לוותר עליה
   }
-  // Attach the event listener to the select element
-  selectElement.addEventListener("change", function () {
-    const selectedVisitorName = this.value;
-    const selectedVisitor = visitors.find(
-      (visitor) => visitor.name === selectedVisitorName
-    );
-    console.log(selectedVisitor);
-    if (selectedVisitor) {
-      updateVisitorInfo(selectedVisitor); // Update the nav menu without reloading the page
-    } else {
-      console.error("Selected visitor not found");
-    }
-  });
 
-  if (onlineVisitors.length > 0) {
-    const onlineVisitor = onlineVisitors[0];
-    selectElement.value = onlineVisitor.name; // Set the select element to show the online visitor's name
-  }
-  const resetButton = document.getElementById("reset-button");
-  if (resetButton) {
-    resetButton.addEventListener("click", function () {
-      // Clear all local storage data
-      localStorage.clear();
-      // Redirect to the home page or any other desired page
-      window.location.href = "/login.html";
-    });
-  }
+  setupResetButton("reset-button", "/login.html");
+
+  selectOnlineVisitor(selectElement, onlineVisitors);
 
   showVisitedAnimals();
   showFeededAnimals();
@@ -54,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function showVisitedAnimals() {
     let visitors = JSON.parse(localStorage.getItem("visitors")) || [];
     if (onlineVisitors.length === 0) {
-      console.log("No visitor is logged in.");
+      alert("No visitor is logged in.");
       return;
     }
 
@@ -63,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
       (visitor) => visitor.name === matchingVisitorName
     );
     let visitedAnimals = visitors[visitorIndex].visitedAnimals || [];
-    console.log(visitedAnimals.length);
     let animalVisitCounts = {};
 
     visitedAnimals.forEach((animal) => {
@@ -76,13 +48,14 @@ document.addEventListener("DOMContentLoaded", function () {
         animalVisitCounts[animal.name] = 1;
       }
     });
-
+    let chartTitle = `Visited Animals by ${matchingVisitorName}`;
     // Prepare data for the chart
     let labels = Object.keys(animalVisitCounts); // Animal names
     let data = Object.values(animalVisitCounts); // Corresponding visit counts// Assuming each animal has a 'visits' count
 
-    renderChart(labels, data, "visitedAnimalsChart", "Visited Animals");
+    renderChart(labels, data, "visitedAnimalsChart", chartTitle);
   }
+  //statistics
   function renderChart(labels, data, canvasId, title) {
     let ctx = document.getElementById(canvasId).getContext("2d");
     new Chart(ctx, {
@@ -119,20 +92,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function showFeededAnimals() {
     visitors = JSON.parse(localStorage.getItem("visitors")) || [];
 
-    if (onlineVisitors.length === 0) {
-      console.log("No visitor is logged in.");
-      return;
-    }
-
     let matchingFeedingName = onlineVisitors[0].name;
-    console.log(matchingFeedingName);
     let visitorIndex = visitors.findIndex(
       (visitor) => visitor.name === matchingFeedingName
     );
 
     // Assuming the property is named 'fedAnimals' and using camelCase
     let fedAnimals = visitors[visitorIndex].feededAnimals || [];
-    console.log(fedAnimals);
     let animalFeedCounts = {};
 
     fedAnimals.forEach((animal) => {
@@ -144,20 +110,17 @@ document.addEventListener("DOMContentLoaded", function () {
         animalFeedCounts[animal.name] = 1;
       }
     });
+    let chartTitle = `Fed Animals by ${onlineVisitors[0].name}`;
+
     let labels = Object.keys(animalFeedCounts); // Animal names
     let data = Object.values(animalFeedCounts); // Corresponding visit counts// Assuming each animal has a 'visits' count
 
-    renderChart(labels, data, "fedAnimalsChart", "Visited Animals");
+    renderChart(labels, data, "fedAnimalsChart", chartTitle);
   }
 
   function showFavoriteAnimal() {
     let onlineVisitors =
       JSON.parse(localStorage.getItem("onlineVisitors")) || [];
-
-    if (onlineVisitors.length === 0) {
-      console.log("No visitor is logged in.");
-      return;
-    }
 
     let favorite = onlineVisitors[0];
     let visitorIndex = visitors.findIndex(

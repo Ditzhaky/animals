@@ -10,13 +10,16 @@
   </head>
   <body>
     <nav class="menu">
-      <ul class="navList">
+      <ul class="nav-list">
         <li><a href="./login.html">Visitors</a></li>
         <li><a href="./dashboard.html">Dashboard</a></li>
       </ul>
     </nav>
     <nav id="visitor-info"></nav>
     <button id="reset-button">Reset</button>
+    <label id="label-visitor-select" for="visitor-select"
+      >Change Visitor:</label
+    >
     <select id="visitor-select">
       <!-- Options will be added dynamically using JavaScript -->
     </select>
@@ -58,8 +61,8 @@
           <option value="white">White</option>
         </select>
       </div>
-      <button id="submitFilters">Submit Filters</button>
-      <button id="resetFilters">Reset Filters</button>
+      <button id="submit-filters">Submit Filters</button>
+      <button id="reset-filters">Reset Filters</button>
     </div>
     <div id="animal-cards"></div>
     <script src="zoo.js"></script>
