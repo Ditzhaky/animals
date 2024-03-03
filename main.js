@@ -48,12 +48,12 @@ function selectOnlineVisitor(selectElement, onlineVisitors) {
   }
 }
 // resets the data in the local storage
-function setupResetButton(buttonId) {
+function setupResetButton(buttonId, redirectUrl) {
   const resetButton = document.getElementById(buttonId);
   if (resetButton) {
     resetButton.addEventListener("click", function () {
       localStorage.clear(); // Clears all local storage data
-      window.location.href = "/login.html";
+      window.location.href = redirectUrl; // Redirects to the specified URL
     });
   }
 }
