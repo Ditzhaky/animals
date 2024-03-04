@@ -308,5 +308,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  setupResetButton("reset-button", "/login.html"); //כפתור ריסט שמחזיר אותנו לדף הלוגין
+  setupResetButton("reset-button", "login.html"); //כפתור ריסט שמחזיר אותנו לדף הלוגין
 });

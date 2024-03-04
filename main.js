@@ -51,7 +51,10 @@ function selectOnlineVisitor(selectElement, onlineVisitors) {
 function setupResetButton(buttonId, redirectUrl) {
   const resetButton = document.getElementById(buttonId);
   if (resetButton) {
-    resetButton.addEventListener("click", function () {
+    resetButton.addEventListener("click", function (event) {
+      // Prevent any default action or event propagation that might interfere
+      event.preventDefault();
+      event.stopPropagation();
       localStorage.clear(); // Clears all local storage data
       window.location.href = redirectUrl; // Redirects to the specified URL
     });

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "zoo.html"; //בעת שינוי דרך הדרופ דאון החלטתי שהגיוני יהיה לחזור למסך גן החיות.
   }
 
-  setupResetButton("reset-button", "/login.html"); //main.js func
+  setupResetButton("reset-button", "login.html"); //main.js func
 
   selectOnlineVisitor(selectElement, onlineVisitors); //main.js func
 

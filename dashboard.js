@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.reload(); // העדפתי שלא להשתמש ברילוד בגלל חווית המשתמש, אבל הסתבכתי עם טבלת הסטטיסטיקה שלקחנו ולא רצינו לוותר עליה
   }
 
-  setupResetButton("reset-button", "/login.html");
+  setupResetButton("reset-button", "login.html");
 
   selectOnlineVisitor(selectElement, onlineVisitors);
 

@@ -39,20 +39,21 @@ function createNewVisitor(event) {
     // Define the makeVisitor function
     const makeVisitor = (name) => {
       // Retrieve stored visitors
-      let storedVisitors = JSON.parse(localStorage.getItem("visitors")) || [];
+      let visitors = JSON.parse(localStorage.getItem("visitors")) || [];
 
       // Add the new visitor
-      storedVisitors.push({ name, coins: 50 });
+      visitors.push({ name, coins: 50 });
 
       // Update the visitors array in local storage
-      localStorage.setItem("visitors", JSON.stringify(storedVisitors));
+      localStorage.setItem("visitors", JSON.stringify(visitors));
 
       // Display success message
       alert(`Welcome, ${name}! You have been registered as a visitor.`);
     };
+    console.log(fullName);
 
     makeVisitor(fullName);
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
   }
 }
 
