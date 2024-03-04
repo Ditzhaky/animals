@@ -50,7 +50,6 @@ function createNewVisitor(event) {
       // Display success message
       alert(`Welcome, ${name}! You have been registered as a visitor.`);
     };
-    console.log(fullName);
 
     makeVisitor(fullName);
     window.location.href = "login.html";
